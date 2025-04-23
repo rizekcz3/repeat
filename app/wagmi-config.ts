@@ -1,10 +1,17 @@
 import { createConfig } from 'wagmi'
-import { mainnet, bsc } from 'wagmi/chains'
+import { bsc } from 'wagmi/chains' // Pouze BSC, pokud nepotřebujete Ethereum
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { http } from 'viem'
 
 export const config = createConfig({
-  chains: [mainnet, bsc],
+  chains: [bsc],
   connectors: [
-    new MetaMaskConnector(),
+    new MetaMaskConnector({
+      chains: [bsc],
+      options: { shimDisconnect: true }
+    }),
   ],
+  transports: {
+    [bsc.id]: http(),
+  },
 })
